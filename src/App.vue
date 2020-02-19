@@ -1,5 +1,7 @@
 <template>
-  <div>黑马面面</div>
+  <div>
+    <router-link to="#">点我啊</router-link>
+  </div>
 </template>
 
 <script>
