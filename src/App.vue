@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <router-view></router-view>
-    <el-button>点我啊</el-button>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
