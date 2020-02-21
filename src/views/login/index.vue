@@ -51,17 +51,23 @@
         <!-- 登录按钮 -->
         <el-form-item>
           <el-button @click="doLogin" class="loginBtn" type="primary">登录</el-button>
-          <el-button class="registerBtn" type="primary">注册</el-button>
+          <el-button @click="doRegister" class="registerBtn" type="primary">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
     <!-- 右侧图片 -->
     <img src="./images/login_banner_ele.png" alt />
+    <!-- 注册对话框模块 -->
+    <register ref="register"></register>
   </div>
 </template>
 
 <script>
+import register from "./components/register";
 export default {
+  components: {
+    register
+  },
   data() {
     return {
       ruleForm: {
@@ -70,6 +76,7 @@ export default {
         code: "",
         agree: true
       },
+
       rules: {
         phone: [{ required: true, message: "手机号不能为空", trigger: "blur" }],
         pwd: [{ required: true, message: "密码不能为空", trigger: "blur" }],
@@ -95,6 +102,9 @@ export default {
           // 发送登录请求
         }
       });
+    },
+    doRegister() {
+      this.$refs.register.dialogFormVisible = true;
     }
   }
 };
