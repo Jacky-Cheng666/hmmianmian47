@@ -85,6 +85,7 @@ export default {
         agree: [
           // { required: true, message: "必须勾选用户同意协议", trigger: "change" }
           // 只有值为true才满足条件，否则代表不匹配
+          // pattern后面写正则表达式
           {
             pattern: /true/,
             message: "必须勾选用户同意协议",
@@ -95,6 +96,7 @@ export default {
     };
   },
   methods: {
+    // 登录的点击事件
     doLogin() {
       this.$refs.loginForm.validate(v => {
         if (v) {
@@ -103,10 +105,12 @@ export default {
         }
       });
     },
+    // 注册的点击事件
     doRegister() {
       this.$refs.register.dialogFormVisible = true;
     }
-  }
+  },
+  created() {}
 };
 </script>
 
