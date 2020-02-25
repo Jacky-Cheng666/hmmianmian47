@@ -35,7 +35,7 @@
               <el-input placeholder="请输入验证码" prefix-icon="el-icon-key" v-model="ruleForm.code"></el-input>
             </el-col>
             <el-col :span="7">
-              <img class="code" src="./images/login_captcha.png" alt />
+              <img @click="resetImg" class="code" :src="ruleForm.imgUrl" alt />
             </el-col>
           </el-row>
         </el-form-item>
@@ -64,6 +64,8 @@
 
 <script>
 import register from "./components/register";
+import { login } from "@/api/login.js";
+import { setToken } from "@/utils/token.js";
 export default {
   components: {
     register
@@ -74,7 +76,8 @@ export default {
         phone: "",
         pwd: "",
         code: "",
-        agree: true
+        agree: true,
+        imgUrl: process.env.VUE_APP_URL + "/captcha?type=login"
       },
 
       rules: {
@@ -100,14 +103,34 @@ export default {
     doLogin() {
       this.$refs.loginForm.validate(v => {
         if (v) {
-          alert("发送请求");
           // 发送登录请求
+          login({
+            phone: this.ruleForm.phone,
+            password: this.ruleForm.pwd,
+            code: this.ruleForm.code
+          }).then(res => {
+            // window.console.log(res);
+            if (res.data.code == 200) {
+              // 把token存起来
+              // window.localStorage.setItem("token", res.data.data.token);
+              setToken(res.data.data.token);
+              this.$message.success("登录成功");
+              this.$router.push("/index");
+            } else {
+              this.$message.error(res.data.message);
+            }
+          });
         }
       });
     },
     // 注册的点击事件
     doRegister() {
       this.$refs.register.dialogFormVisible = true;
+    },
+    // 图片点击事件
+    resetImg() {
+      this.ruleForm.imgUrl =
+        process.env.VUE_APP_URL + "/captcha?type=login&t=" + Date.now();
     }
   },
   created() {}
