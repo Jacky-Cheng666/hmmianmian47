@@ -82,14 +82,13 @@ export default {
           // 调用退出接口。并返回登录页。
           logout().then(res => {
             window.console.log(res);
-            if (res.data.code == 200) {
-              // 1，退出成功，要移除token
-              removeToken();
-              // 2，给出友情提示
-              this.$message.success("退出成功");
-              // 3，退出成功要跳转到登录页面
-              this.$router.push("/login");
-            }
+
+            // 1，退出成功，要移除token
+            removeToken();
+            // 2，给出友情提示
+            this.$message.success("退出成功");
+            // 3，退出成功要跳转到登录页面
+            this.$router.push("/login");
           });
         })
         .catch(() => {
