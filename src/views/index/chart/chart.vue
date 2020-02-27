@@ -1,6 +1,5 @@
 <template>
-<!-- 路由的出口 -->
-  <router-view></router-view>
+  <h2>数据概览</h2>
 </template>
 
 <script>

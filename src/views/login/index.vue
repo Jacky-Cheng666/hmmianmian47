@@ -73,8 +73,8 @@ export default {
   data() {
     return {
       ruleForm: {
-        phone: "",
-        pwd: "",
+        phone: "15272419000",
+        pwd: "123456",
         code: "",
         agree: true,
         imgUrl: process.env.VUE_APP_URL + "/captcha?type=login"
@@ -115,6 +115,7 @@ export default {
               // window.localStorage.setItem("token", res.data.data.token);
               setToken(res.data.data.token);
               this.$message.success("登录成功");
+              // 跳转到首页。
               this.$router.push("/index");
             } else {
               this.$message.error(res.data.message);
