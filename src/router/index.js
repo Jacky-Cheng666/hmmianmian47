@@ -7,6 +7,7 @@ import 'nprogress/nprogress.css'  //导入nprogress的css样式。
 import { Info } from '@/api/index.js'
 import { removeToken } from '../utils/token'
 import { Message } from 'element-ui';
+import store from '../store/vuex'
 // 注册路由
 Vue.use(VueRouter)
 // 准备组件
@@ -97,6 +98,9 @@ router.beforeEach((to, from, next) => {
         Info().then(res => {
             if (res.data.code == 200) {
                 // 代表token是真的，就放行。
+                // 将服务器返回的信息存入vuex数据仓库里面
+                // console.log(this);  //undefined
+                store.commit("getInfo", res.data.data)
                 next();//放行
             } else {//代表token有问题，可能是伪造的
                 // 1，给出提示。注意：在路由的js文件里面，this不是vue实例，所以不能识别this.$message。

@@ -9,8 +9,8 @@
       </div>
       <!-- 右边的部分 -->
       <div class="user">
-        <img class="icon" :src="avatar" alt />
-        <span class="nickName">{{username}}，您好</span>
+        <img class="icon" :src="$store.state.avatar" alt />
+        <span class="nickName">{{$store.state.username}}，您好</span>
         <el-button @click="doLogout" type="primary" size="small">退出</el-button>
       </div>
     </el-header>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { Info, logout } from "@/api/index.js";
+import { logout } from "@/api/index.js";
 import { removeToken } from "@/utils/token.js";
 export default {
   data() {
@@ -72,17 +72,17 @@ export default {
   created() {
     // 调用获取用户信息的接口
     // 带入token给服务器发送请求
-
     // 现象：就算伪造token，也是能够先进入首页，然后发现token错误，才打回到登录页。
     //原因： ajax请求是异步请求,异步的请求要等同步任务(页面渲染)执行完毕后才执行。
-    Info().then(res => {
-      window.console.log(res);
-      if (res.data.code == 200) {
-        // 记得在前面拼接基地址，因为服务器返回的地址不完整。还要拼接/号
-        this.avatar = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
-        this.username = res.data.data.username;
-      }
-    });
+    //因为导航守卫里面已经请求过一次info了，这里再请求一次会多于。
+    // Info().then(res => {
+    //   window.console.log(res);
+    //   if (res.data.code == 200) {
+    //     // 记得在前面拼接基地址，因为服务器返回的地址不完整。还要拼接/号
+    //     this.avatar = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
+    //     this.username = res.data.data.username;
+    //   }
+    // });
   },
   methods: {
     doLogout() {
@@ -95,9 +95,10 @@ export default {
           // 调用退出接口。并返回登录页。
           logout().then(res => {
             window.console.log(res);
-
             // 1，退出成功，要移除token
             removeToken();
+            // 清空vuex数据，给getInfo传入一个空字符串，就代表把username和avatar值赋为空
+            this.$store.commit("getInfo", "");
             // 2，给出友情提示
             this.$message.success("退出成功");
             // 3，退出成功要跳转到登录页面
