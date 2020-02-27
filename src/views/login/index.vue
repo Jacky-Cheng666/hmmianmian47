@@ -109,7 +109,7 @@ export default {
             password: this.ruleForm.pwd,
             code: this.ruleForm.code
           }).then(res => {
-            // window.console.log(res);
+            window.console.log(res);
             if (res.data.code == 200) {
               // 把token存起来
               // window.localStorage.setItem("token", res.data.data.token);

@@ -62,13 +62,26 @@ export default {
       isCollapse: false
     };
   },
+  beforeCreate() {
+    // 判断用户是否登录，如果得到null，说明未登录。before是最早的生命周期
+    // if (getToken() == null) {
+    //   this.$message.error("请先登录");
+    //   this.$router.push("/login");
+    // }
+  },
   created() {
     // 调用获取用户信息的接口
+    // 带入token给服务器发送请求
+
+    // 现象：就算伪造token，也是能够先进入首页，然后发现token错误，才打回到登录页。
+    //原因： ajax请求是异步请求,异步的请求要等同步任务(页面渲染)执行完毕后才执行。
     Info().then(res => {
       window.console.log(res);
-      // 记得在前面拼接基地址，因为服务器返回的地址不完整。还要拼接/号
-      this.avatar = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
-      this.username = res.data.data.username;
+      if (res.data.code == 200) {
+        // 记得在前面拼接基地址，因为服务器返回的地址不完整。还要拼接/号
+        this.avatar = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
+        this.username = res.data.data.username;
+      }
     });
   },
   methods: {
