@@ -33,3 +33,30 @@ export function subjectStatus(data) {
         data
     })
 }
+
+// 3，新增学科的接口
+export function subjectAdd(data) {
+    return subjectRequest({
+        url: "/subject/add",
+        method: "post",
+        data
+    })
+}
+
+// 4，编辑学科接口
+export function subjectEdit(data) {
+    return subjectRequest({
+        url: "/subject/edit",
+        method: "post",
+        data
+    })
+}
+
+// 5，删除学科接口
+export function subjectDelete(data) {
+    return subjectRequest({
+        url: "/subject/remove",
+        method: "post",
+        data
+    })
+}

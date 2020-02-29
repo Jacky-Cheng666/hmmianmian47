@@ -214,7 +214,7 @@ export default {
               this.dialogFormVisible = false;
               // 若关闭表单，则需要重置表单。resetFields()方法只能重置表单元素。而img不是表单元素，只要img绑定的url还在，就一直在现实。
               this.$refs.registerForm.resetFields();
-              // 将imgurl设置为空，不显示图片。 
+              // 将imgurl设置为空，不显示图片。
               this.imageUrl = "";
             } else {
               // 注册不成功，给出用户提示
@@ -228,7 +228,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .el-dialog {
   .el-dialog__header {
     background: linear-gradient(to right, #11bfee, #2491e9);

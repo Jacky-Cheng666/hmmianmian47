@@ -10,6 +10,9 @@ import store from './store/vuex'
 // 导入全局样式
 import "./style/base.css"
 
+// 导入全局过滤器
+// 这个文件只需要保证能够执行里面的代码就行了，所以只是简单导入。
+import "@/filters/filters.js"
 // 导入路由
 import router from './router/index'
 new Vue({
