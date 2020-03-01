@@ -136,6 +136,7 @@ export default {
       });
     },
     search() {
+      this.page = 1;
       this.getList();
     },
     // 页容量改变事件
