@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="user">
     <!-- 顶部卡片 -->
     <el-card class="box-card topCard">
       <el-form :inline="true" :model="formInline" class="demo-form-inline" ref="formInline">
@@ -17,8 +17,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">搜索</el-button>
-          <el-button>清除</el-button>
+          <el-button type="primary" @click="search">搜索</el-button>
+          <el-button @click="clearForm">清除</el-button>
           <el-button icon="el-icon-plus" type="primary">新增用户</el-button>
         </el-form-item>
       </el-form>
@@ -31,7 +31,7 @@
         <el-table-column prop="username" label="用户名"></el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column prop="role_id" label="角色"></el-table-column>
+        <el-table-column prop="role" label="角色"></el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
@@ -43,13 +43,15 @@
           <template slot-scope="scope">
             <el-button type="text">编辑</el-button>
             <el-button type="text">{{scope.row.status===1?"禁用":"启用"}}</el-button>
-            <el-button type="text">删除</el-button>
+            <el-button type="text" @click="delUser(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <!-- 分页器模块 -->
       <el-pagination
         background
+        @size-change="SizeChange"
+        @current-change="pageChange"
         :current-page="page"
         :page-sizes="[2,5,10,20,30,40,50]"
         :page-size="size"
@@ -61,7 +63,7 @@
 </template>
 
 <script>
-import { userList } from "@/api/user.js";
+import { userList, userDelete } from "@/api/user.js";
 export default {
   name: "user",
   components: {},
@@ -86,6 +88,7 @@ export default {
     // 1，获取用户列表
     getUserList() {
       userList({
+        ...this.formInline,
         page: this.page,
         limit: this.size
       }).then(res => {
@@ -95,20 +98,69 @@ export default {
           this.total = res.data.data.pagination.total;
         }
       });
+    },
+    // 2，搜索点击事件
+    search() {
+      this.page = 1;
+      this.getUserList();
+    },
+    // 3，清除按钮点击事件
+    clearForm() {
+      this.$refs.formInline.resetFields();
+      this.page = 1;
+      this.getUserList();
+    },
+    // 4，页容量改变事件
+    SizeChange(size) {
+      this.size = size;
+      this.page = 1;
+      this.getUserList();
+    },
+    // 5,页码改变事件
+    pageChange(page) {
+      this.page = page;
+      this.getUserList();
+    },
+    // 6，删除按钮点击事件
+    delUser(row) {
+      this.$confirm("确认是否删除用户", "友情提示", {
+        type: "warning"
+      })
+        .then(() => {
+          userDelete({
+            id: row.id
+          }).then(res => {
+            if (res.data.code == 200) {
+              this.$message.success("删除成功");
+              if (this.tableData.length == 1) {
+                this.page--;
+              }
+              if (this.page == 0) {
+                this.page = 1;
+              }
+              this.getUserList();
+            } else {
+              this.$message.error(res.data.message);
+            }
+          });
+        })
+        .catch(() => {});
     }
   }
 };
 </script>
 
-<style>
+<style lang="less">
 .topCard {
   margin-bottom: 19px;
 }
 .short {
   width: 100px;
 }
-.normal {
-  width: 149px;
+.user {
+  .normal {
+    width: 179px;
+  }
 }
 .el-pagination {
   margin-top: 30px;
