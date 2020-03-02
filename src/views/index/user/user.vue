@@ -19,7 +19,7 @@
         <el-form-item>
           <el-button type="primary" @click="search">搜索</el-button>
           <el-button @click="clearForm">清除</el-button>
-          <el-button icon="el-icon-plus" type="primary">新增用户</el-button>
+          <el-button icon="el-icon-plus" type="primary" @click="addUser">新增用户</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -41,8 +41,11 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text">编辑</el-button>
-            <el-button type="text">{{scope.row.status===1?"禁用":"启用"}}</el-button>
+            <el-button type="text" @click="userEdit(scope.row)">编辑</el-button>
+            <el-button
+              type="text"
+              @click="changeUserStatus(scope.row)"
+            >{{scope.row.status===1?"禁用":"启用"}}</el-button>
             <el-button type="text" @click="delUser(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -59,14 +62,19 @@
         :total="total"
       ></el-pagination>
     </el-card>
+    <!-- 新增用户模块/编辑用户模块 -->
+    <user-dialog ref="userDialog"></user-dialog>
   </div>
 </template>
 
 <script>
-import { userList, userDelete } from "@/api/user.js";
+import { userList, userDelete, userStatus } from "@/api/user.js";
+import userDialog from "./components/userDialog";
 export default {
   name: "user",
-  components: {},
+  components: {
+    userDialog
+  },
   data() {
     return {
       formInline: {
@@ -145,6 +153,34 @@ export default {
           });
         })
         .catch(() => {});
+    },
+    // 7，用户新增点击事件
+    addUser() {
+      this.$refs.userDialog.form = {};
+      this.$refs.userDialog.isAdd = true;
+      this.$refs.userDialog.dialogFormVisible = true;
+    },
+    // 8，编辑用户点击事件
+    userEdit(row) {
+      // console.log(row);
+      this.$refs.userDialog.isAdd = false;
+      this.$refs.userDialog.dialogFormVisible = true;
+      if (row != this.oldItem) {
+        this.$refs.userDialog.form = { ...row };
+        this.oldItem = row;
+      }
+    },
+    // 9，改变用户状态方法
+    changeUserStatus(row) {
+      // console.log(row);
+      userStatus({ id: row.id }).then(res => {
+        console.log(res);
+        if (res.data.code == 200) {
+          this.getUserList();
+        } else {
+          this.$message.error(res.data.message);
+        }
+      });
     }
   }
 };
