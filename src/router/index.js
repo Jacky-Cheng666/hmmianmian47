@@ -13,57 +13,23 @@ Vue.use(VueRouter)
 // 准备组件
 import login from '../views/login/index.vue'
 import index from '../views/index/index.vue'
-// 导入组件
-import user from '../views/index/user/user.vue'
-import subject from '../views/index/subject/subject.vue'
-import question from '../views/index/question/question.vue'
-import chart from '../views/index/chart/chart.vue'
-import business from '../views/index/business/business.vue'
+
+// 导入子路由规则
+import children from './childrenRoutes'
 
 // 配置路由规则
 const routes = [
     {
         path: "/login",
         component: login,
-        meta: { title: "黑马面面在线题库-登录页面" }
+        meta: { title: "黑马面面在线题库-登录页面", roles: ["超级管理员", "管理员", "老师", "学生"] }
     },
     {
         path: "/index",
         component: index,
-        meta: { title: "首页" },
+        meta: { title: "首页", roles: ["超级管理员", "管理员", "老师", "学生"] },
         // index首页的子路由配置规则
-        children: [
-            {
-                // 子路由一般不加/
-                path: "user",
-                component: user,
-                meta: { title: "用户列表" }
-            },
-            {
-                // 子路由一般不加/
-                path: "subject",
-                component: subject,
-                meta: { title: "学科列表" }
-            },
-            {
-                // 子路由一般不加/
-                path: "question",
-                component: question,
-                meta: { title: "题库列表" }
-            },
-            {
-                // 子路由一般不加/
-                path: "chart",
-                component: chart,
-                meta: { title: "数据概览" }
-            },
-            {
-                // 子路由一般不加/
-                path: "business",
-                component: business,
-                meta: { title: "企业列表" }
-            },
-        ]
+        children: children
     },
     {
         path: "/",
@@ -100,8 +66,37 @@ router.beforeEach((to, from, next) => {
                 // 代表token是真的，就放行。
                 // 将服务器返回的信息存入vuex数据仓库里面
                 // console.log(this);  //undefined
-                store.commit("getInfo", res.data.data)
-                next();//放行
+                // 判断登录的用户账号是否有效
+                // 1，如果登陆的账号是启用状态，则存储账号信息到vuex，并放行。
+                // console.log(res);
+                if (res.data.data.status == 1) {
+                    store.commit("getInfo", res.data.data)
+                    if (from.path == "/login") {
+                        Message.success("登录成功");
+                    }
+                    // 1.1就算账号是启用的，也不能放行。
+                    // 还要判断：账号有没有权限访问将要去的页面。
+                    // 通过to.meta.roles可以得到要去的页面哪些角色可以访问。
+                    // console.log(to);
+                    // includes方法：判断一个数组是否包含某个元素，包含true，不包含false; 
+                    if (to.meta.roles.includes(res.data.data.role)) {
+                        // 如果即将要去的页面里面的权限数组，包含当前账号的角色，准许放行。
+                        next();
+                    } else {
+                        // 否则提示无访问权限。并且打回到之前的页面。
+                        Message.error("您无此页面的访问权限")
+                        NProgress.done()
+                        // 打回到之前的页面。
+                        next(from.path)
+                    }
+
+                } else {
+                    // 2，账号如果被禁用，则提示错误信息，并且打回登录页面
+                    Message.warning("账号被禁用，请于管理员联系")
+                    NProgress.done()
+                    next("/login")
+
+                }
             } else {//代表token有问题，可能是伪造的
                 // 1，给出提示。注意：在路由的js文件里面，this不是vue实例，所以不能识别this.$message。
                 Message.error("未登录，请先登录")

@@ -5,12 +5,14 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         username: "",
-        avatar: ""
+        avatar: "",
+        role: ""
     },
     mutations: {
         getInfo(state, obj) {
             state.username = obj.username;
             state.avatar = process.env.VUE_APP_URL + "/" + obj.avatar;
+            state.role = obj.role;
         }
     }
 })

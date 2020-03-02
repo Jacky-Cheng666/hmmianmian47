@@ -109,13 +109,14 @@ export default {
             password: this.ruleForm.pwd,
             code: this.ruleForm.code
           }).then(res => {
-            window.console.log(res);
+            // window.console.log(res);
             if (res.data.code == 200) {
               // 把token存起来
               // window.localStorage.setItem("token", res.data.data.token);
               setToken(res.data.data.token);
-              this.$message.success("登录成功");
-              // 跳转到首页。
+              // 登录成功后就提示登录成功。
+              // this.$message.success("登录成功");
+              // 跳转到首页。(路由跳转，这里才会触发beforeEach函数钩子，所以才会被导航守卫拦截下来。)
               this.$router.push("/index");
             } else {
               this.$message.error(res.data.message);

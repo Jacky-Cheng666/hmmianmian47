@@ -21,26 +21,17 @@
         <!-- 菜单 -->
         <!-- router属性为true，代表启用路由模式，点击菜单会进行路由跳转。以被点击的表单的Index属性作为路径跳转 -->
         <el-menu default-active="chart" class="el-menu-vertical-demo" :collapse="isCollapse" router>
-          <el-menu-item index="/index/chart">
-            <i class="el-icon-pie-chart"></i>
-            <span slot="title">数据概览</span>
-          </el-menu-item>
-          <el-menu-item index="/index/user">
-            <i class="el-icon-user"></i>
-            <span slot="title">用户列表</span>
-          </el-menu-item>
-          <el-menu-item index="/index/question">
-            <i class="el-icon-edit-outline"></i>
-            <span slot="title">题库列表</span>
-          </el-menu-item>
-          <el-menu-item index="/index/business">
-            <i class="el-icon-office-building"></i>
-            <span slot="title">企业列表</span>
-          </el-menu-item>
-          <el-menu-item index="/index/subject">
-            <i class="el-icon-notebook-2"></i>
-            <span slot="title">学科列表</span>
-          </el-menu-item>
+          <!-- 我们这里需要根据登录的用户的角色来判断显示哪些菜单。 -->
+          <template v-for="(item, index) in childrenRoutes">
+            <el-menu-item
+              :key="index"
+              :index="'/index/'+item.path"
+              v-if="item.meta.roles.includes($store.state.role)"
+            >
+              <i :class="item.meta.icon"></i>
+              <span slot="title">{{item.meta.title}}</span>
+            </el-menu-item>
+          </template>
         </el-menu>
       </el-aside>
       <el-main class="my-main">
@@ -54,9 +45,13 @@
 <script>
 import { logout } from "@/api/index.js";
 import { removeToken } from "@/utils/token.js";
+// 导入子路由的规则
+import childrenRoutes from "@/router/childrenRoutes";
 export default {
   data() {
     return {
+      // 把路由的规则数组传到data
+      childrenRoutes,
       avatar: "",
       username: "",
       isCollapse: false
