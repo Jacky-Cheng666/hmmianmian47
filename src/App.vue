@@ -1,5 +1,5 @@
 <template>
-<!-- 路由的出口 -->
+  <!-- 最大两个路由的出口 -->
   <router-view></router-view>
 </template>
 

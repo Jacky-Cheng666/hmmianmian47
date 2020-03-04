@@ -167,7 +167,7 @@ export default {
     }
   }
   .my-main {
-    background-color: #0094ff;
+    background-color: #e9e8eb;
   }
 }
 </style>

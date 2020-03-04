@@ -92,7 +92,7 @@ router.beforeEach((to, from, next) => {
 
                 } else {
                     // 2，账号如果被禁用，则提示错误信息，并且打回登录页面
-                    Message.warning("账号被禁用，请于管理员联系")
+                    Message.error("账号被禁用，请于管理员联系")
                     NProgress.done()
                     next("/login")
 
