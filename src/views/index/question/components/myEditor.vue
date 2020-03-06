@@ -1,13 +1,14 @@
 <template>
   <div class="myEditor">
     <div class="toolbar" ref="toolbar"></div>
-    <div class="content" ref="content"></div>
+    <div class="content" ref="content">{{content}}</div>
   </div>
 </template>
 
 <script>
 import wangeditor from "wangeditor";
 export default {
+  name: "editor",
   props: {
     value: {
       type: String,
@@ -16,6 +17,7 @@ export default {
   },
   data() {
     return {
+      content: this.value,
       editor: ""
     };
   },

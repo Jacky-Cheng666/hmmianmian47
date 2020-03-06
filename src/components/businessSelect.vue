@@ -1,5 +1,6 @@
 <template>
   <el-select class="short" @change="change" v-model="enterprise" placeholder="请选择企业">
+    <el-option value="" v-if="isSearch">所有企业</el-option>
     <el-option
       v-for="(item, index) in enterpriseList"
       :key="index"
@@ -15,7 +16,11 @@ export default {
   name: "businessSelect",
   props: {
     value: {
-      type: Number
+      default: ""
+    },
+    isSearch: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -38,6 +43,11 @@ export default {
       this.$emit("input", this.enterprise);
     }
     // 也可使用watch来监听enterprise值的改变。
+  },
+  watch: {
+    value(val) {
+      this.enterprise = val;
+    }
   }
 };
 </script>

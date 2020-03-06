@@ -1,13 +1,13 @@
 <template>
   <div class="questionDialog">
-    <el-dialog :destroy-on-close="true" fullscreen title="新增题库" :visible.sync="dialogFormVisible">
+    <el-dialog destroy-on-close fullscreen title="新增题库" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="学科" :label-width="formLabelWidth" prop="subject">
           <!-- 学科下拉框模块 -->
           <subjectSelect v-model="form.subject"></subjectSelect>
         </el-form-item>
         <el-form-item label="阶段" :label-width="formLabelWidth" prop="step">
-          <el-select class="selLength" v-model="form.step">
+          <el-select class="selLength" v-model="form.step" placeholder="请选择阶段">
             <el-option label="初级" :value="1"></el-option>
             <el-option label="中级" :value="2"></el-option>
             <el-option label="高级" :value="3"></el-option>
@@ -22,9 +22,9 @@
         </el-form-item>
         <el-form-item label="题型" :label-width="formLabelWidth" prop="type">
           <el-radio-group v-model="form.type">
-            <el-radio label="1">单选</el-radio>
-            <el-radio label="2">多选</el-radio>
-            <el-radio label="3">简答</el-radio>
+            <el-radio :label="1">单选</el-radio>
+            <el-radio :label="2">多选</el-radio>
+            <el-radio :label="3">简答</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="难度" :label-width="formLabelWidth" prop="difficulty">
@@ -127,8 +127,9 @@ import chinaArea from "./chinaArea";
 import myEditor from "./myEditor";
 import optionItem from "./optionItem";
 import videoUpload from "./videoUpload";
-import { questionAdd } from "@/api/question.js";
+import { questionEdit } from "@/api/question.js";
 export default {
+  name: "questionEdit",
   components: {
     chinaArea,
     myEditor,
@@ -203,10 +204,10 @@ export default {
     save() {
       this.$refs.form.validate(v => {
         if (v) {
-          questionAdd(this.form).then(res => {
+          questionEdit(this.form).then(res => {
             console.log(res);
             if (res.data.code == 200) {
-              this.$message.success("发布成功");
+              this.$message.success("编辑成功");
               this.dialogFormVisible = false;
               this.$parent.getSubjectList();
               // 重置表单元素只能重置表单，自己封装的组件不能重置。
