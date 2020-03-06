@@ -26,8 +26,8 @@ export default {
     // 监听富文本值改变的事件。
     // function里面的this指向默认指向window.
     // 所以这里不要用function，需要用箭头函数
-    this.editor.customConfig.onchange = html => {
-      this.$emit("input", html);
+    this.editor.customConfig.onchange = () => {
+      this.$emit("input", this.editor.txt.text());
     };
     this.editor.create();
   }

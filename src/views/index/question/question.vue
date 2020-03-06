@@ -182,6 +182,8 @@ export default {
     // }
     // 4，编辑按钮点击事件
     questionEdit(row) {
+      console.log(row);
+
       this.$refs.questionEdit.form = { ...row };
       this.$refs.questionEdit.form.city = this.$refs.questionEdit.form.city.split(
         ","
@@ -191,6 +193,7 @@ export default {
       );
       this.$refs.questionEdit.dialogFormVisible = true;
     },
+    // 新增题库
     questionAdd() {
       this.$refs.questionDialog.dialogFormVisible = true;
     },
