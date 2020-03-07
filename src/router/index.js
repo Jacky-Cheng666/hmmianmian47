@@ -35,6 +35,11 @@ const routes = [
         path: "/",
         redirect: "/login"   //redirect重定向
     },
+    {
+        // 路由重定向：如果没有匹配到路由中配置的地址，重定向到登录页。
+        path: "*", //*号代表匹配不到。
+        redirect: "/login"   //redirect重定向
+    },
 
 ]
 // 创建路由对象。
