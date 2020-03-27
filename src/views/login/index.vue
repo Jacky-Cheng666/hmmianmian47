@@ -73,8 +73,8 @@ export default {
   data() {
     return {
       ruleForm: {
-        phone: "15272419000",
-        pwd: "123456",
+        phone: "18511111111",
+        pwd: "12345678",
         code: "",
         agree: true,
         imgUrl: process.env.VUE_APP_URL + "/captcha?type=login"
@@ -109,7 +109,7 @@ export default {
             password: this.ruleForm.pwd,
             code: this.ruleForm.code
           }).then(res => {
-            // window.console.log(res);
+            window.console.log(res);
             if (res.data.code == 200) {
               // 把token存起来
               // window.localStorage.setItem("token", res.data.data.token);

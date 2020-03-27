@@ -99,7 +99,9 @@ export default {
       page: 1,
       size: 5,
       total: 0,
-      oldItem: null
+      oldItem: null,
+      isClickedAdd: false,
+      tempItem: ""
     };
   },
   created() {
@@ -185,14 +187,21 @@ export default {
       if (row != this.oldItem) {
         this.$refs.businessDialog.form = { ...row };
         this.oldItem = row;
+      } else if (this.isClickedAdd) {
+        // 就把之前form的值重新赋值给form
+        this.$refs.businessDialog.form = this.tempItem;
       }
     },
     // 9，新增企业按钮点击事件
     addBusiness() {
+      //再新增之前，把改动的数据先保存起来
+      this.tempItem = this.$refs.businessDialog.form;
       // 因为是同一个表单，需要清空一下表单里面的数据。
       this.$refs.businessDialog.form = {};
       this.$refs.businessDialog.isAdd = true;
       this.$refs.businessDialog.dialogFormVisible = true;
+      // 标记刚刚是否点过新增按钮。
+      this.isClickedAdd = true;
     }
   }
 };

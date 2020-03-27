@@ -7,7 +7,7 @@ export function getToken() {
 
 // 2，设置token，保存token，他有一个参数来接收token值
 export function setToken(token) {
-    return window.localStorage.setItem(TOKENKEY, token)
+    window.localStorage.setItem(TOKENKEY, token)
 }
 
 // 3，删除token
