@@ -22,7 +22,7 @@ const routes = [
     {
         path: "/login",
         component: login,
-        meta: { title: "黑马面面在线题库-登录页面", roles: ["超级管理员", "管理员", "老师", "学生"] }
+        meta: { title: "题库宝典-登录页面", roles: ["超级管理员", "管理员", "老师", "学生"] }
     },
     {
         path: "/index",

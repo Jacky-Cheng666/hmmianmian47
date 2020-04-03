@@ -5,7 +5,7 @@
       <div class="logo">
         <i :class="isCollapse?'el-icon-s-unfold':'el-icon-s-fold'" @click="isCollapse=!isCollapse"></i>
         <img src="./images/logo.png" alt />
-        <span>黑马面面</span>
+        <span>名师在线</span>
       </div>
       <!-- 右边的部分 -->
       <div class="user">
@@ -76,7 +76,10 @@ export default {
     //     // 记得在前面拼接基地址，因为服务器返回的地址不完整。还要拼接/号
     //     this.avatar = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
     //     this.username = res.data.data.username;
-    //   }
+    //   }else if(res.data.code==206){
+    // this.$message.fail("登录状态异常，请重新登录")
+    // this.$router.push('/login')
+    //}
     // });
   },
   methods: {

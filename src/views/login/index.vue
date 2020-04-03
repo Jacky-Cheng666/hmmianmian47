@@ -5,7 +5,7 @@
       <!-- 文字标题模块 -->
       <div class="title-box">
         <img class="logo" src="../login/images/login_logo.png" alt />
-        <span class="left-title">黑马面面</span>
+        <span class="left-title">名师在线</span>
         <span class="line"></span>
         <span class="right-title">用户登录</span>
       </div>
@@ -109,7 +109,7 @@ export default {
             password: this.ruleForm.pwd,
             code: this.ruleForm.code
           }).then(res => {
-            window.console.log(res);
+            // window.console.log(res);
             if (res.data.code == 200) {
               // 把token存起来
               // window.localStorage.setItem("token", res.data.data.token);
