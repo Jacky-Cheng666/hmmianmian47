@@ -41,6 +41,7 @@
         <el-form-item label="题目标题" label-width="200px" prop="title">
           <myEditor v-model="form.title"></myEditor>
         </el-form-item>
+        <!-- 单选框模块 -->
         <el-form-item
           v-if="form.type==1"
           label="单选"
@@ -59,7 +60,7 @@
             ></option-item>
           </el-radio-group>
         </el-form-item>
-
+        <!-- 多选框模块 -->
         <el-form-item
           v-else-if="form.type==2"
           label="多选"
@@ -78,6 +79,7 @@
             ></option-item>
           </el-checkbox-group>
         </el-form-item>
+        <!-- 简单模块 -->
         <el-form-item v-else label="简答" :label-width="formLabelWidth" prop="short_answer">
           <el-input
             class="textarea"
