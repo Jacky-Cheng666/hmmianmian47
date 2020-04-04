@@ -117,7 +117,7 @@ export default {
               // 登录成功后就提示登录成功。
               // this.$message.success("登录成功");
               // 跳转到首页。(路由跳转，这里才会触发beforeEach函数钩子，所以才会被导航守卫拦截下来。)
-              this.$router.push("/index/chart");
+              this.$router.push("/index");
             } else {
               this.$message.error(res.data.message);
             }
